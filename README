@@ -430,7 +430,7 @@ DESCRIPTION
         The default value for the "recurse" request parameter (default: 10).
 
     $AnyEvent::HTTP::TIMEOUT
-        The default timeout for conenction operations (default: 300).
+        The default timeout for connection operations (default: 300).
 
     $AnyEvent::HTTP::USERAGENT
         The default value for the "User-Agent" header (the default is

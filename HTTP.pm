@@ -48,7 +48,7 @@ use AnyEvent::Handle ();
 
 use base Exporter::;
 
-our $VERSION = '2.13';
+our $VERSION = '2.14';
 
 our @EXPORT = qw(http_get http_post http_head http_request);
 
@@ -1330,7 +1330,7 @@ sub parse_date($) {
    for (0..11) {
       if ($m eq $month[$_]) {
          require Time::Local;
-         return Time::Local::timegm ($S, $M, $H, $d, $_, $y);
+         return eval { Time::Local::timegm ($S, $M, $H, $d, $_, $y) };
       }
    }
 
