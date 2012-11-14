@@ -48,7 +48,7 @@ use AnyEvent::Handle ();
 
 use base Exporter::;
 
-our $VERSION = '2.14';
+our $VERSION = '2.15';
 
 our @EXPORT = qw(http_get http_post http_head http_request);
 
@@ -156,8 +156,8 @@ include:
 
 =item recurse => $count (default: $MAX_RECURSE)
 
-Whether to recurse requests or not, e.g. on redirects, authentication
-retries and so on, and how often to do so.
+Whether to recurse requests or not, e.g. on redirects, authentication and
+other retries and so on, and how often to do so.
 
 =item headers => hashref
 
@@ -1052,8 +1052,9 @@ sub http_request($$@) {
             %state = ();
             $state{recurse} =
                http_request (
-                  $method => $url,
+                  $method   => $url,
                   %arg,
+                  recurse   => $recurse - 1,
                   keepalive => 0,
                   sub {
                      %state = ();

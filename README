@@ -108,7 +108,8 @@ DESCRIPTION
 
         recurse => $count (default: $MAX_RECURSE)
             Whether to recurse requests or not, e.g. on redirects,
-            authentication retries and so on, and how often to do so.
+            authentication and other retries and so on, and how often to do
+            so.
 
         headers => hashref
             The request headers to use. Currently, "http_request" may

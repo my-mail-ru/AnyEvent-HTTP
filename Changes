@@ -4,6 +4,13 @@ TODO: provide lwp_request function that takes an lwp http requets and returns a 
 TODO: httpbis: $location = URI->new_abs($location, "$scheme://$host:$port$path_query")->as_string;
 TODO: set_proxy hook
 TODO: use proxy hook
+TODO: ip6 literals in url
+TODO: maybe read big chunks in smaller portions for chunked-encoding + on_body.
+
+2.15 Wed Nov 14 23:22:07 CET 2012
+	- use the recurse parameter to also limit the number of retries to be
+          done, avodiing endless loops with broken servers, as reported
+          by Carl Chambers.
 
 2.14 Sun Apr 22 14:57:51 CEST 2012
 	- Time::Local::timegm croaks on out-of-range values. Don't let
