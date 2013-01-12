@@ -1196,7 +1196,7 @@ string of the form C<http://host:port>, croaks otherwise.
 
 To clear an already-set proxy, use C<undef>.
 
-When AnyEvent::HTTP is laoded for the first time it will query the
+When AnyEvent::HTTP is loaded for the first time it will query the
 default proxy from the operating system, currently by looking at
 C<$ENV{http_proxy>}.
 
