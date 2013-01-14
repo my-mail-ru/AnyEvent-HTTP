@@ -125,7 +125,7 @@ message. Currently the following status codes are used:
 
 =over 4
 
-=item 595 - errors during connection etsbalishment, proxy handshake.
+=item 595 - errors during connection establishment, proxy handshake.
 
 =item 596 - errors during TLS negotiation, request sending and header processing.
 
