@@ -1218,11 +1218,12 @@ The key C<version> has to contain C<1>, otherwise the hash gets
 emptied. All other keys are hostnames or IP addresses pointing to
 hash-references. The key for these inner hash references is the
 server path for which this cookie is meant, and the values are again
-hash-references. The keys of those hash-references is the cookie name, and
+hash-references. Each key of those hash-references is a cookie name, and
 the value, you guessed it, is another hash-reference, this time with the
 key-value pairs from the cookie, except for C<expires> and C<max-age>,
 which have been replaced by a C<_expires> key that contains the cookie
-expiry timestamp.
+expiry timestamp. Session cookies are indicated by not having an
+C<_expires> key.
 
 Here is an example of a cookie jar with a single cookie, so you have a
 chance of understanding the above paragraph:
