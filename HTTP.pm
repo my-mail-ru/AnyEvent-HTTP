@@ -691,6 +691,44 @@ sub _error(\%$$) {
    ()
 }
 
+our %IDEMPOTENT = (
+   DELETE		=> 1,
+   GET			=> 1,
+   HEAD			=> 1,
+   OPTIONS		=> 1,
+   PUT			=> 1,
+   TRACE		=> 1,
+
+   ACL			=> 1,
+   "BASELINE-CONTROL"	=> 1,
+   BIND			=> 1,
+   CHECKIN		=> 1,
+   CHECKOUT		=> 1,
+   COPY			=> 1,
+   LABEL		=> 1,
+   LINK			=> 1,
+   MERGE		=> 1,
+   MKACTIVITY		=> 1,
+   MKCALENDAR		=> 1,
+   MKCOL		=> 1,
+   MKREDIRECTREF	=> 1,
+   MKWORKSPACE		=> 1,
+   MOVE			=> 1,
+   ORDERPATCH		=> 1,
+   PROPFIND		=> 1,
+   PROPPATCH		=> 1,
+   REBIND		=> 1,
+   REPORT		=> 1,
+   SEARCH		=> 1,
+   UNBIND		=> 1,
+   UNCHECKOUT		=> 1,
+   UNLINK		=> 1,
+   UNLOCK		=> 1,
+   UPDATE		=> 1,
+   UPDATEREDIRECTREF	=> 1,
+   "VERSION-CONTROL"	=> 1,
+);
+
 sub http_request($$@) {
    my $cb = pop;
    my ($method, $url, %arg) = @_;
@@ -775,7 +813,7 @@ sub http_request($$@) {
    $hdr{"content-length"} = length $arg{body}
       if length $arg{body} || $method ne "GET";
 
-   my $idempotent = $method =~ /^(?:GET|HEAD|PUT|DELETE|OPTIONS|TRACE)$/;
+   my $idempotent = $IDEMPOTENT{$method};
 
    # default value for keepalive is true iff the request is for an idempotent method
    my $persistent = exists $arg{persistent} ? !!$arg{persistent} : $idempotent;
@@ -1281,7 +1319,7 @@ give a shit for everybody else on the planet.
 
 =item $AnyEvent::HTTP::PERSISTENT_TIMEOUT
 
-The time after which idle persistent conenctions get closed by
+The time after which idle persistent connections get closed by
 AnyEvent::HTTP (default: C<3>).
 
 =item $AnyEvent::HTTP::ACTIVE
