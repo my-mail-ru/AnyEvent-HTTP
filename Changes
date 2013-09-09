@@ -6,6 +6,8 @@ TODO: set_proxy hook
 TODO: use proxy hook
 TODO: ip6 literals in url
 TODO: maybe read big chunks in smaller portions for chunked-encoding + on_body.
+TODO: request body is deleted on POST, but might need to be used later for redirects.
+TODL: on_upgrade, for 101 responses?
 
 	- add lots of known idempotent methods from httpbis.
 

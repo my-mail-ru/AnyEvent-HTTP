@@ -91,7 +91,7 @@ object at least alive until the callback get called. If the object gets
 destroyed before the callback is called, the request will be cancelled.
 
 The callback will be called with the response body data as first argument
-(or C<undef> if an error occured), and a hash-ref with response headers
+(or C<undef> if an error occurred), and a hash-ref with response headers
 (and trailers) as second argument.
 
 All the headers in that hash are lowercased. In addition to the response
@@ -244,7 +244,7 @@ context) - only connections using the same unique ID will be reused.
 =item on_prepare => $callback->($fh)
 
 In rare cases you need to "tune" the socket before it is used to
-connect (for exmaple, to bind it on a given IP address). This parameter
+connect (for example, to bind it on a given IP address). This parameter
 overrides the prepare callback passed to C<AnyEvent::Socket::tcp_connect>
 and behaves exactly the same way (e.g. it has to provide a
 timeout). See the description for the C<$prepare_cb> argument of
@@ -846,7 +846,7 @@ sub http_request($$@) {
          . (delete $arg{body})
       );
 
-      # return if error occured during push_write()
+      # return if error occurred during push_write()
       return unless %state;
 
       # reduce memory usage, save a kitten, also re-use it for the response headers.
@@ -1246,7 +1246,7 @@ cookies.
 
 You should call this function (with a true C<$session_end>) before you
 save cookies to disk, and you should call this function after loading them
-again. If you have a long-running program you can additonally call this
+again. If you have a long-running program you can additionally call this
 function from time to time.
 
 A cookie jar is initially an empty hash-reference that is managed by this
@@ -1313,9 +1313,9 @@ The default value for this is C<4>, and it is highly advisable to not
 increase it much.
 
 For comparison: the RFC's recommend 4 non-persistent or 2 persistent
-connections, older browsers used 2, newers (such as firefox 3) typically
-use 6, and Opera uses 8 because like, they have the fastest browser and
-give a shit for everybody else on the planet.
+connections, older browsers used 2, newer ones (such as firefox 3)
+typically use 6, and Opera uses 8 because like, they have the fastest
+browser and give a shit for everybody else on the planet.
 
 =item $AnyEvent::HTTP::PERSISTENT_TIMEOUT
 
@@ -1394,7 +1394,7 @@ eval {
 
 =head2 SHOWCASE
 
-This section contaisn some more elaborate "real-world" examples or code
+This section contains some more elaborate "real-world" examples or code
 snippets.
 
 =head2 HTTP/1.1 FILE DOWNLOAD
@@ -1408,7 +1408,7 @@ HTTP/1.0 servers as well, and usually falls back to a complete re-download
 on older servers.
 
 It calls the completion callback with either C<undef>, which means a
-nonretryable error occured, C<0> when the download was partial and should
+nonretryable error occurred, C<0> when the download was partial and should
 be retried, and C<1> if it was successful.
 
    use AnyEvent::HTTP;
