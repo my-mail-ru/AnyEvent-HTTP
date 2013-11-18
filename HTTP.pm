@@ -823,7 +823,7 @@ sub http_request($$@) {
    # the key to use in the keepalive cache
    my $ka_key = "$uscheme\x00$uhost\x00$uport\x00$arg{sessionid}";
 
-   $hdr{connection} = ($persistent ? $keepalive ? "keep-alive " : "" : "close ") . "Te"; #1.1
+   $hdr{connection} = ($persistent ? $keepalive ? "keep-alive, " : "" : "close, ") . "Te"; #1.1
    $hdr{te}         = "trailers" unless exists $hdr{te}; #1.1
 
    my %state = (connect_guard => 1);

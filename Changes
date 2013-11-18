@@ -9,6 +9,7 @@ TODO: maybe read big chunks in smaller portions for chunked-encoding + on_body.
 TODO: request body is deleted on POST, but might need to be used later for redirects.
 TODL: on_upgrade, for 101 responses?
 
+	- connection header was malformed (patch by Raphael Geissert).
 	- add lots of known idempotent methods from httpbis.
 
 2.15 Wed Nov 14 23:22:07 CET 2012
