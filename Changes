@@ -1,14 +1,16 @@
 Revision history for AnyEvent::HTTP
 
 TODO: provide lwp_request function that takes an lwp http requets and returns a http response.
-TODO: httpbis: $location = URI->new_abs($location, "$scheme://$host:$port$path_query")->as_string;
 TODO: set_proxy hook
 TODO: use proxy hook
 TODO: ip6 literals in url
 TODO: maybe read big chunks in smaller portions for chunked-encoding + on_body.
-TODO: request body is deleted on POST, but might need to be used later for redirects.
 TODL: on_upgrade, for 101 responses?
 TODO: document session vs. sessionid correctly.
+
+2.21 Mon Jun  9 01:35:54 CEST 2014
+	- correctly keep body when redirecting POSTs, instead of
+          deleting them.
 
 2.2  Mon Jun  9 01:31:46 CEST 2014
 	- connection header was malformed (patch by Raphael Geissert).

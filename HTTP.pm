@@ -48,7 +48,7 @@ use AnyEvent::Handle ();
 
 use base Exporter::;
 
-our $VERSION = 2.2;
+our $VERSION = 2.21;
 
 our @EXPORT = qw(http_get http_post http_head http_request);
 
@@ -848,7 +848,7 @@ sub http_request($$@) {
          "$method $rpath HTTP/1.1\015\012"
          . (join "", map "\u$_: $hdr{$_}\015\012", grep defined $hdr{$_}, keys %hdr)
          . "\015\012"
-         . (delete $arg{body})
+         . $arg{body}
       );
 
       # return if error occurred during push_write()
