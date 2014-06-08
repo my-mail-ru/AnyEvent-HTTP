@@ -8,9 +8,14 @@ TODO: ip6 literals in url
 TODO: maybe read big chunks in smaller portions for chunked-encoding + on_body.
 TODO: request body is deleted on POST, but might need to be used later for redirects.
 TODL: on_upgrade, for 101 responses?
+TODO: document session vs. sessionid correctly.
 
+2.2  Mon Jun  9 01:31:46 CEST 2014
 	- connection header was malformed (patch by Raphael Geissert).
 	- add lots of known idempotent methods from httpbis.
+        - implement relative location headers (rfc 7231), with fallback on URI.
+        - add support for status code 308 from rfc 7238.
+        - recommend URI.
 
 2.15 Wed Nov 14 23:22:07 CET 2012
 	- use the recurse parameter to also limit the number of retries to be

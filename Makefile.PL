@@ -12,6 +12,11 @@ my $mm = MM->new({
        AnyEvent      => 5.33,
        common::sense => 3.3,
     },
+    META_MERGE   => {
+       recommends => {
+          URI => 0,
+       },
+    },
 });
 
 $mm->flush;

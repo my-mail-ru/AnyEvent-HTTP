@@ -48,7 +48,7 @@ use AnyEvent::Handle ();
 
 use base Exporter::;
 
-our $VERSION = '2.15';
+our $VERSION = 2.2;
 
 our @EXPORT = qw(http_get http_post http_head http_request);
 
@@ -158,6 +158,11 @@ include:
 
 Whether to recurse requests or not, e.g. on redirects, authentication and
 other retries and so on, and how often to do so.
+
+Only redirects to http and https URLs are supported. While most common
+redirection forms are handled entirely within this module, some require
+the use of the optional L<URI> module. If it is required but missing, then
+the request will fail with an error.
 
 =item headers => hashref
 
@@ -883,19 +888,42 @@ sub http_request($$@) {
          }
 
          # redirect handling
-         # microsoft and other shitheads don't give a shit for following standards,
-         # try to support some common forms of broken Location headers.
-         if ($hdr{location} !~ /^(?: $ | [^:\/?\#]+ : )/x) {
-            $hdr{location} =~ s/^\.\/+//;
+         # relative uri handling forced by microsoft and other shitheads.
+         # we give our best and fall back to URI if available.
+         if (exists $hdr{location}) {
+            my $loc = $hdr{location};
 
-            my $url = "$rscheme://$uhost:$uport";
+            if ($loc =~ m%^//%) { # //
+               $loc = "$rscheme:$loc";
 
-            unless ($hdr{location} =~ s/^\///) {
-               $url .= $upath;
-               $url =~ s/\/[^\/]*$//;
+            } elsif ($loc eq "") {
+               $loc = $url;
+
+            } elsif ($loc !~ /^(?: $ | [^:\/?\#]+ : )/x) { # anything "simple"
+               $loc =~ s/^\.\/+//;
+
+               if ($loc !~ m%^[.?#]%) {
+                  my $prefix = "$rscheme://$uhost:$uport";
+
+                  unless ($loc =~ s/^\///) {
+                     $prefix .= $upath;
+                     $prefix =~ s/\/[^\/]*$//;
+                  }
+
+                  $loc = "$prefix/$loc";
+
+               } elsif (eval { require URI }) { # uri
+                  $loc = URI->new_abs ($loc, $url)->as_string;
+
+               } else {
+                  return _error %state, $cb, { @pseudo, Status => 599, Reason => "Cannot parse Location (URI module missing)" };
+                  #$hdr{Status} = 599;
+                  #$hdr{Reason} = "Unparsable Redirect (URI module missing)";
+                  #$recurse = 0;
+               }
             }
 
-            $hdr{location} = "$url/$hdr{location}";
+            $hdr{location} = $loc;
          }
 
          my $redirect;
@@ -907,12 +935,13 @@ sub http_request($$@) {
             # 301, 302 and 303, in contrast to HTTP/1.0 and 1.1.
             # also, the UA should ask the user for 301 and 307 and POST,
             # industry standard seems to be to simply follow.
-            # we go with the industry standard.
+            # we go with the industry standard. 308 is defined
+            # by rfc7238
             if ($status == 301 or $status == 302 or $status == 303) {
                # HTTP/1.1 is unclear on how to mutate the method
                $method = "GET" unless $method eq "HEAD";
                $redirect = 1;
-            } elsif ($status == 307) {
+            } elsif ($status == 307 or $status == 308) {
                $redirect = 1;
             }
          }

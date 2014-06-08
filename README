@@ -52,7 +52,7 @@ DESCRIPTION
         cancelled.
 
         The callback will be called with the response body data as first
-        argument (or "undef" if an error occured), and a hash-ref with
+        argument (or "undef" if an error occurred), and a hash-ref with
         response headers (and trailers) as second argument.
 
         All the headers in that hash are lowercased. In addition to the
@@ -84,7 +84,7 @@ DESCRIPTION
         590-599 and the "Reason" pseudo-header will contain an error
         message. Currently the following status codes are used:
 
-        595 - errors during connection etsbalishment, proxy handshake.
+        595 - errors during connection establishment, proxy handshake.
         596 - errors during TLS negotiation, request sending and header
         processing.
         597 - errors during body receiving or processing.
@@ -110,6 +110,12 @@ DESCRIPTION
             Whether to recurse requests or not, e.g. on redirects,
             authentication and other retries and so on, and how often to do
             so.
+
+            Only redirects to http and https URLs are supported. While most
+            common redirection forms are handled entirely within this
+            module, some require the use of the optional URI module. If it
+            is required but missing, then the request will fail with an
+            error.
 
         headers => hashref
             The request headers to use. Currently, "http_request" may
@@ -191,7 +197,7 @@ DESCRIPTION
 
         on_prepare => $callback->($fh)
             In rare cases you need to "tune" the socket before it is used to
-            connect (for exmaple, to bind it on a given IP address). This
+            connect (for example, to bind it on a given IP address). This
             parameter overrides the prepare callback passed to
             "AnyEvent::Socket::tcp_connect" and behaves exactly the same way
             (e.g. it has to provide a timeout). See the description for the
@@ -374,7 +380,7 @@ DESCRIPTION
 
         To clear an already-set proxy, use "undef".
 
-        When AnyEvent::HTTP is laoded for the first time it will query the
+        When AnyEvent::HTTP is loaded for the first time it will query the
         default proxy from the operating system, currently by looking at
         "$ENV{http_proxy"}.
 
@@ -386,7 +392,7 @@ DESCRIPTION
         You should call this function (with a true $session_end) before you
         save cookies to disk, and you should call this function after
         loading them again. If you have a long-running program you can
-        additonally call this function from time to time.
+        additionally call this function from time to time.
 
         A cookie jar is initially an empty hash-reference that is managed by
         this module. It's format is subject to change, but currently it is
@@ -396,11 +402,12 @@ DESCRIPTION
         All other keys are hostnames or IP addresses pointing to
         hash-references. The key for these inner hash references is the
         server path for which this cookie is meant, and the values are again
-        hash-references. The keys of those hash-references is the cookie
-        name, and the value, you guessed it, is another hash-reference, this
-        time with the key-value pairs from the cookie, except for "expires"
-        and "max-age", which have been replaced by a "_expires" key that
-        contains the cookie expiry timestamp.
+        hash-references. Each key of those hash-references is a cookie name,
+        and the value, you guessed it, is another hash-reference, this time
+        with the key-value pairs from the cookie, except for "expires" and
+        "max-age", which have been replaced by a "_expires" key that
+        contains the cookie expiry timestamp. Session cookies are indicated
+        by not having an "_expires" key.
 
         Here is an example of a cookie jar with a single cookie, so you have
         a chance of understanding the above paragraph:
@@ -449,12 +456,12 @@ DESCRIPTION
         increase it much.
 
         For comparison: the RFC's recommend 4 non-persistent or 2 persistent
-        connections, older browsers used 2, newers (such as firefox 3)
+        connections, older browsers used 2, newer ones (such as firefox 3)
         typically use 6, and Opera uses 8 because like, they have the
         fastest browser and give a shit for everybody else on the planet.
 
     $AnyEvent::HTTP::PERSISTENT_TIMEOUT
-        The time after which idle persistent conenctions get closed by
+        The time after which idle persistent connections get closed by
         AnyEvent::HTTP (default: 3).
 
     $AnyEvent::HTTP::ACTIVE
@@ -464,7 +471,7 @@ DESCRIPTION
         load-leveling.
 
   SHOWCASE
-    This section contaisn some more elaborate "real-world" examples or code
+    This section contains some more elaborate "real-world" examples or code
     snippets.
 
   HTTP/1.1 FILE DOWNLOAD
@@ -477,7 +484,7 @@ DESCRIPTION
     re-download on older servers.
 
     It calls the completion callback with either "undef", which means a
-    nonretryable error occured, 0 when the download was partial and should
+    nonretryable error occurred, 0 when the download was partial and should
     be retried, and 1 if it was successful.
 
        use AnyEvent::HTTP;
@@ -625,6 +632,6 @@ AUTHOR
        Marc Lehmann <schmorp@schmorp.de>
        http://home.schmorp.de/
 
-    With many thanks to Дмитрий Шалашов, who provided
-    countless testcases and bugreports.
+    With many thanks to Дмитрий Шалашов, who provided countless testcases
+    and bugreports.
 
