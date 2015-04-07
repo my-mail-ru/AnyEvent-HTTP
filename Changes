@@ -8,6 +8,9 @@ TODO: maybe read big chunks in smaller portions for chunked-encoding + on_body.
 TODL: on_upgrade, for 101 responses?
 TODO: document session vs. sessionid correctly.
 
+TODO: when mutating POST to GET for redirects, delete the $arg{body} if possible (joe trader)
+TODO: proxy authorization (dzagashev@gmail.com)
+TODO: infinite recursion (Kostirya)
 2.21 Mon Jun  9 01:35:54 CEST 2014
 	- correctly keep body when redirecting POSTs, instead of
           deleting them.

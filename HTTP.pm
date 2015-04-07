@@ -936,7 +936,7 @@ sub http_request($$@) {
             # also, the UA should ask the user for 301 and 307 and POST,
             # industry standard seems to be to simply follow.
             # we go with the industry standard. 308 is defined
-            # by rfc7238
+            # by rfc7538
             if ($status == 301 or $status == 302 or $status == 303) {
                # HTTP/1.1 is unclear on how to mutate the method
                $method = "GET" unless $method eq "HEAD";
@@ -1279,7 +1279,7 @@ again. If you have a long-running program you can additionally call this
 function from time to time.
 
 A cookie jar is initially an empty hash-reference that is managed by this
-module. It's format is subject to change, but currently it is like this:
+module. Its format is subject to change, but currently it is as follows:
 
 The key C<version> has to contain C<1>, otherwise the hash gets
 emptied. All other keys are hostnames or IP addresses pointing to
@@ -1334,7 +1334,7 @@ C<Mozilla/5.0 (compatible; U; AnyEvent-HTTP/$VERSION; +http://software.schmorp.d
 =item $AnyEvent::HTTP::MAX_PER_HOST
 
 The maximum number of concurrent connections to the same host (identified
-by the hostname). If the limit is exceeded, then the additional requests
+by the hostname). If the limit is exceeded, then additional requests
 are queued until previous connections are closed. Both persistent and
 non-persistent connections are counted in this limit.
 
