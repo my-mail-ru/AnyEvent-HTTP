@@ -8,9 +8,16 @@ TODO: maybe read big chunks in smaller portions for chunked-encoding + on_body.
 TODL: on_upgrade, for 101 responses?
 TODO: document session vs. sessionid correctly.
 
-TODO: when mutating POST to GET for redirects, delete the $arg{body} if possible (joe trader)
 TODO: proxy authorization (dzagashev@gmail.com)
 TODO: infinite recursion (Kostirya)
+TODO: ipv6 not properly parsed in authority (Raphael Geissert)
+
+	- delete the body when mutating request to GET request when
+          redirecting (reported by joe trader).
+        - send proxy-authorization header to proxy when using CONNECT
+          (reported by dzagashev@gmail.com).
+	- do not send Proxy-Authroization header when not using a proxy.
+
 2.21 Mon Jun  9 01:35:54 CEST 2014
 	- correctly keep body when redirecting POSTs, instead of
           deleting them.

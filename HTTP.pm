@@ -938,9 +938,12 @@ sub http_request($$@) {
             # we go with the industry standard. 308 is defined
             # by rfc7538
             if ($status == 301 or $status == 302 or $status == 303) {
-               # HTTP/1.1 is unclear on how to mutate the method
-               $method = "GET" unless $method eq "HEAD";
                $redirect = 1;
+               # HTTP/1.1 is unclear on how to mutate the method
+               unless ($method eq "HEAD") {
+                  $method = "GET";
+                  delete $arg{body};
+               }
             } elsif ($status == 307 or $status == 308) {
                $redirect = 1;
             }
@@ -1178,8 +1181,12 @@ sub http_request($$@) {
       if ($proxy && $uscheme eq "https") {
          # oh dear, we have to wrap it into a connect request
 
+         my $auth = exists $hdr{"proxy-authorization"}
+            ? "proxy-authorization: " . (delete $hdr{"proxy-authorization"}) . "\015\012"
+            : "";
+
          # maybe re-use $uauthority with patched port?
-         $state{handle}->push_write ("CONNECT $uhost:$uport HTTP/1.0\015\012\015\012");
+         $state{handle}->push_write ("CONNECT $uhost:$uport HTTP/1.0\015\012$auth\015\012");
          $state{handle}->push_read (line => $qr_nlnl, sub {
             $_[1] =~ /^HTTP\/([0-9\.]+) \s+ ([0-9]{3}) (?: \s+ ([^\015\012]*) )?/ix
                or return _error %state, $cb, { @pseudo, Status => 599, Reason => "Invalid proxy connect response ($_[1])" };
@@ -1192,6 +1199,8 @@ sub http_request($$@) {
             }
          });
       } else {
+         delete $hdr{"proxy-authorization"} unless $proxy;
+
          $handle_actual_request->();
       }
    };
