@@ -7,8 +7,8 @@ TODO: ip6 literals in url
 TODO: maybe read big chunks in smaller portions for chunked-encoding + on_body.
 TODL: on_upgrade, for 101 responses?
 TODO: document session vs. sessionid correctly.
+TODO: support proxy username:password in both proxy switch and set_proxy string (dzagashev@gmail.com)
 
-TODO: proxy authorization (dzagashev@gmail.com)
 TODO: infinite recursion (Kostirya)
 TODO: ipv6 not properly parsed in authority (Raphael Geissert)
 

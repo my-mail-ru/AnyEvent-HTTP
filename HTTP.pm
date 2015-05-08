@@ -197,6 +197,9 @@ C<$scheme> must be either missing or must be C<http> for HTTP.
 If not specified, then the default proxy is used (see
 C<AnyEvent::HTTP::set_proxy>).
 
+Currently, if your proxy requires authorization, you have to specify an
+appropriate "Proxy-Authorization" header in every request.
+
 =item body => $string
 
 The request body, usually empty. Will be sent as-is (future versions of
