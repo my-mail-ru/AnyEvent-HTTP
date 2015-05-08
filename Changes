@@ -8,15 +8,19 @@ TODO: maybe read big chunks in smaller portions for chunked-encoding + on_body.
 TODL: on_upgrade, for 101 responses?
 TODO: document session vs. sessionid correctly.
 TODO: support proxy username:password in both proxy switch and set_proxy string (dzagashev@gmail.com)
+TODO: remove "unexpectedly got a destructed handle"
 
+TODO: callback as body (Kostirya)
 TODO: infinite recursion (Kostirya)
-TODO: ipv6 not properly parsed in authority (Raphael Geissert)
 
+	- ipv6 literals were not correctly parsed (analyzed by Raphael Geissert).
 	- delete the body when mutating request to GET request when
           redirecting (reported by joe trader).
         - send proxy-authorization header to proxy when using CONNECT
           (reported by dzagashev@gmail.com).
 	- do not send Proxy-Authroization header when not using a proxy.
+	- when retrying a persistent request, switch persistency off.
+        - added t/02_ip_literals.t.
 
 2.21 Mon Jun  9 01:35:54 CEST 2014
 	- correctly keep body when redirecting POSTs, instead of

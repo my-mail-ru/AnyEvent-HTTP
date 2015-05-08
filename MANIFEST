@@ -6,3 +6,4 @@ Makefile.PL
 HTTP.pm
 t/00_load.t
 t/01_basic.t
+t/02_ip_literals.t

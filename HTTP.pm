@@ -775,7 +775,7 @@ sub http_request($$@) {
              : $uscheme eq "https" ? 443
              : return $cb->(undef, { @pseudo, Status => 599, Reason => "Only http and https URL schemes supported" });
 
-   $uauthority =~ /^(?: .*\@ )? ([^\@:]+) (?: : (\d+) )?$/x
+   $uauthority =~ /^(?: .*\@ )? ([^\@]+?) (?: : (\d+) )?$/x
       or return $cb->(undef, { @pseudo, Status => 599, Reason => "Unparsable URL" });
 
    my $uhost = lc $1;
@@ -1125,10 +1125,10 @@ sub http_request($$@) {
             %state = ();
             $state{recurse} =
                http_request (
-                  $method   => $url,
+                  $method    => $url,
                   %arg,
-                  recurse   => $recurse - 1,
-                  keepalive => 0,
+                  recurse    => $recurse - 1,
+                  persistent => 0,
                   sub {
                      %state = ();
                      &$cb
