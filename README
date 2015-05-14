@@ -149,6 +149,10 @@ DESCRIPTION
             If not specified, then the default proxy is used (see
             "AnyEvent::HTTP::set_proxy").
 
+            Currently, if your proxy requires authorization, you have to
+            specify an appropriate "Proxy-Authorization" header in every
+            request.
+
         body => $string
             The request body, usually empty. Will be sent as-is (future
             versions of this module might offer more options).
@@ -395,8 +399,8 @@ DESCRIPTION
         additionally call this function from time to time.
 
         A cookie jar is initially an empty hash-reference that is managed by
-        this module. It's format is subject to change, but currently it is
-        like this:
+        this module. Its format is subject to change, but currently it is as
+        follows:
 
         The key "version" has to contain 1, otherwise the hash gets emptied.
         All other keys are hostnames or IP addresses pointing to
@@ -447,7 +451,7 @@ DESCRIPTION
 
     $AnyEvent::HTTP::MAX_PER_HOST
         The maximum number of concurrent connections to the same host
-        (identified by the hostname). If the limit is exceeded, then the
+        (identified by the hostname). If the limit is exceeded, then
         additional requests are queued until previous connections are
         closed. Both persistent and non-persistent connections are counted
         in this limit.

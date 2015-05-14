@@ -3,16 +3,16 @@ Revision history for AnyEvent::HTTP
 TODO: provide lwp_request function that takes an lwp http requets and returns a http response.
 TODO: set_proxy hook
 TODO: use proxy hook
-TODO: ip6 literals in url
 TODO: maybe read big chunks in smaller portions for chunked-encoding + on_body.
-TODL: on_upgrade, for 101 responses?
+TODO: on_upgrade, for 101 responses?
 TODO: document session vs. sessionid correctly.
 TODO: support proxy username:password in both proxy switch and set_proxy string (dzagashev@gmail.com)
 TODO: remove "unexpectedly got a destructed handle"
 
 TODO: callback as body (Kostirya)
-TODO: infinite recursion (Kostirya)
+TODO: infinite recursion(?) (Kostirya)
 
+2.22 Thu May 14 04:04:03 CEST 2015
 	- ipv6 literals were not correctly parsed (analyzed by Raphael Geissert).
 	- delete the body when mutating request to GET request when
           redirecting (reported by joe trader).
