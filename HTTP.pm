@@ -897,7 +897,7 @@ sub http_request($$@) {
             my $loc = $hdr{location};
 
             if ($loc =~ m%^//%) { # //
-               $loc = "$rscheme:$loc";
+               $loc = "$uscheme:$loc";
 
             } elsif ($loc eq "") {
                $loc = $url;
@@ -906,7 +906,7 @@ sub http_request($$@) {
                $loc =~ s/^\.\/+//;
 
                if ($loc !~ m%^[.?#]%) {
-                  my $prefix = "$rscheme://$uhost:$uport";
+                  my $prefix = "$uscheme://$uhost:$uport";
 
                   unless ($loc =~ s/^\///) {
                      $prefix .= $upath;
