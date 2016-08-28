@@ -48,7 +48,7 @@ use AnyEvent::Handle ();
 
 use base Exporter::;
 
-our $VERSION = 2.22;
+our $VERSION = 2.23;
 
 our @EXPORT = qw(http_get http_post http_head http_request);
 
@@ -1463,8 +1463,6 @@ be retried, and C<1> if it was successful.
       my %hdr;
       my $ofs = 0;
 
-      warn stat $fh;
-      warn -s _;
       if (stat $fh and -s _) {
          $ofs = -s _;
          warn "-s is ", $ofs;
@@ -1502,7 +1500,7 @@ be retried, and C<1> if it was successful.
             my $status = $hdr->{Status};
 
             if (my $time = AnyEvent::HTTP::parse_date $hdr->{"last-modified"}) {
-               utime $fh, $time, $time;
+               utime $time, $time, $fh;
             }
 
             if ($status == 200 || $status == 206 || $status == 416) {

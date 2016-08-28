@@ -502,8 +502,6 @@ DESCRIPTION
           my %hdr;
           my $ofs = 0;
 
-          warn stat $fh;
-          warn -s _;
           if (stat $fh and -s _) {
              $ofs = -s _;
              warn "-s is ", $ofs;
@@ -541,7 +539,7 @@ DESCRIPTION
                 my $status = $hdr->{Status};
 
                 if (my $time = AnyEvent::HTTP::parse_date $hdr->{"last-modified"}) {
-                   utime $fh, $time, $time;
+                   utime $time, $time, $fh;
                 }
 
                 if ($status == 200 || $status == 206 || $status == 416) {

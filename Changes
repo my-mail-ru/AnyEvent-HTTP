@@ -13,6 +13,12 @@ TODO: callback as body (Kostirya)
 TODO: infinite recursion(?) (Kostirya)
 TODO: default rbuf_max value maybe? how about reading large chunks in small parts?
 
+2.23 Sun Aug 28 11:30:33 CEST 2016
+	- relative redirects used the proxy schema instead of the request
+          url schema to generate the new url, which is wrong (analyzed by Felix
+          Ostmann).
+        - fix download example (reported by Felix Ostmann).
+
 2.22 Thu May 14 04:04:03 CEST 2015
 	- ipv6 literals were not correctly parsed (analyzed by Raphael Geissert).
 	- delete the body when mutating request to GET request when
