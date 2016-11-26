@@ -48,7 +48,7 @@ use AnyEvent::Handle ();
 
 use base Exporter::;
 
-our $VERSION = 2.23;
+our $VERSION = 2.24;
 
 our @EXPORT = qw(http_get http_post http_head http_request);
 
@@ -1033,7 +1033,7 @@ sub http_request($$@) {
          } elsif ($chunked) {
             my $cl = 0;
             my $body = "";
-            my $on_body = $arg{on_body} || sub { $body .= shift; 1 };
+            my $on_body = (!$redirect && $arg{on_body}) || sub { $body .= shift; 1 };
 
             $state{read_chunk} = sub {
                $_[1] =~ /^([0-9a-fA-F]+)/
@@ -1076,7 +1076,7 @@ sub http_request($$@) {
 
             $_[0]->push_read (line => $state{read_chunk});
 
-         } elsif ($arg{on_body}) {
+         } elsif (!$redirect && $arg{on_body}) {
             if (defined $len) {
                $_[0]->on_read (sub {
                   $len -= length $_[0]{rbuf};

@@ -13,6 +13,10 @@ TODO: callback as body (Kostirya)
 TODO: infinite recursion(?) (Kostirya)
 TODO: default rbuf_max value maybe? how about reading large chunks in small parts?
 
+2.24
+	- do not call on_body callback on a response that AE::HTTP will recurse
+          on internally (reported by Антон Онуфриев and Ruslan Zakirov).
+
 2.23 Sun Aug 28 11:30:33 CEST 2016
 	- relative redirects used the proxy schema instead of the request
           url schema to generate the new url, which is wrong (analyzed by Felix
