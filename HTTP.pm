@@ -1311,7 +1311,7 @@ Here is an example of a cookie jar with a single cookie, so you have a
 chance of understanding the above paragraph:
 
    {
-      version    => 1,
+      version    => 2,
       "10.0.0.1" => {
          "/" => {
             "mythweb_id" => {
