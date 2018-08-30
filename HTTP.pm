@@ -48,7 +48,7 @@ use AnyEvent::Handle ();
 
 use base Exporter::;
 
-our $VERSION = 2.24;
+our $VERSION = 2.25;
 
 our @EXPORT = qw(http_get http_post http_head http_request);
 
@@ -906,7 +906,7 @@ sub http_request($$@) {
                $loc =~ s/^\.\/+//;
 
                if ($loc !~ m%^[.?#]%) {
-                  my $prefix = "$uscheme://$uhost:$uport";
+                  my $prefix = "$uscheme://$uauthority";
 
                   unless ($loc =~ s/^\///) {
                      $prefix .= $upath;
@@ -1219,11 +1219,11 @@ sub http_request($$@) {
          $was_persistent = 1;
 
          $state{handle} = ka_fetch $ka_key;
-         $state{handle}->destroyed
-            and die "AnyEvent::HTTP: unexpectedly got a destructed handle (1), please report.";#d#
+#         $state{handle}->destroyed
+#            and die "AnyEvent::HTTP: unexpectedly got a destructed handle (1), please report.";#d#
          $prepare_handle->();
-         $state{handle}->destroyed
-            and die "AnyEvent::HTTP: unexpectedly got a destructed handle (2), please report.";#d#
+#         $state{handle}->destroyed
+#            and die "AnyEvent::HTTP: unexpectedly got a destructed handle (2), please report.";#d#
          $handle_actual_request->();
 
       } else {
