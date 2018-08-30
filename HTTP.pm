@@ -48,7 +48,7 @@ use AnyEvent::Handle ();
 
 use base Exporter::;
 
-our $VERSION = 2.25;
+our $VERSION = 2.24;
 
 our @EXPORT = qw(http_get http_post http_head http_request);
 
@@ -456,7 +456,7 @@ sub _get_slot($$) {
 sub cookie_jar_expire($;$) {
    my ($jar, $session_end) = @_;
 
-   %$jar = () if $jar->{version} != 1;
+   %$jar = () if $jar->{version} != 2;
 
    my $anow = AE::now;
 
@@ -486,20 +486,19 @@ sub cookie_jar_expire($;$) {
 sub cookie_jar_extract($$$$) {
    my ($jar, $scheme, $host, $path) = @_;
 
-   %$jar = () if $jar->{version} != 1;
+   %$jar = () if $jar->{version} != 2;
+
+   $host = AnyEvent::Util::idn_to_ascii $host
+      if $host =~ /[^\x00-\x7f]/;
 
    my @cookies;
 
    while (my ($chost, $paths) = each %$jar) {
       next unless ref $paths;
 
-      if ($chost =~ /^\./) {
-         next unless $chost eq substr $host, -length $chost;
-      } elsif ($chost =~ /\./) {
-         next unless $chost eq $host;
-      } else {
-         next;
-      }
+      # exact match or suffix including . match
+      $chost eq $host or ".$chost" eq substr $host, -1 - length $chost
+         or next;
 
       while (my ($cpath, $cookies) = each %$paths) {
          next unless $cpath eq substr $path, 0, length $cpath;
@@ -530,6 +529,8 @@ sub cookie_jar_extract($$$$) {
 # parse set_cookie header into jar
 sub cookie_jar_set_cookie($$$$) {
    my ($jar, $set_cookie, $host, $date) = @_;
+
+   %$jar = () if $jar->{version} != 2;
 
    my $anow = int AE::now;
    my $snow; # server-now
@@ -585,7 +586,7 @@ sub cookie_jar_set_cookie($$$$) {
       my $cpath = (delete $kv{path}) || "/";
 
       if (exists $kv{domain}) {
-         $cdom = delete $kv{domain};
+         $cdom = $kv{domain};
 
          $cdom =~ s/^\.?/./; # make sure it starts with a "."
 
@@ -594,12 +595,14 @@ sub cookie_jar_set_cookie($$$$) {
          # this is not rfc-like and not netscape-like. go figure.
          my $ndots = $cdom =~ y/.//;
          next if $ndots < ($cdom =~ /\.[^.][^.]\.[^.][^.]$/ ? 3 : 2);
+
+         $cdom = substr $cdom, 1; # remove initial .
       } else {
          $cdom = $host;
       }
 
       # store it
-      $jar->{version} = 1;
+      $jar->{version} = 2;
       $jar->{lc $cdom}{$cpath}{$name} = \%kv;
 
       redo if /\G\s*,/gc;
