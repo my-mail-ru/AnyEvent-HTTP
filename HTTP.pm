@@ -1296,8 +1296,8 @@ function from time to time.
 A cookie jar is initially an empty hash-reference that is managed by this
 module. Its format is subject to change, but currently it is as follows:
 
-The key C<version> has to contain C<1>, otherwise the hash gets
-emptied. All other keys are hostnames or IP addresses pointing to
+The key C<version> has to contain C<2>, otherwise the hash gets
+cleared. All other keys are hostnames or IP addresses pointing to
 hash-references. The key for these inner hash references is the
 server path for which this cookie is meant, and the values are again
 hash-references. Each key of those hash-references is a cookie name, and
