@@ -344,8 +344,8 @@ that doesn't solve your problem in a better way.
 Try to create/reuse a persistent connection. When this flag is set
 (default: true for idempotent requests, false for all others), then
 C<http_request> tries to re-use an existing (previously-created)
-persistent connection to the host and, failing that, tries to create a new
-one.
+persistent connection to same host (i.e. identical URL scheme, hostname,
+port and session) and, failing that, tries to create a new one.
 
 Requests failing in certain ways will be automatically retried once, which
 is dangerous for non-idempotent requests, which is why it defaults to off
