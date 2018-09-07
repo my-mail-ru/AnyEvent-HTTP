@@ -266,6 +266,12 @@ to do this, but you can provide your own C<tcp_connect> function -
 obviously, it has to follow the same calling conventions, except that it
 may always return a connection guard object.
 
+The connections made by this hook will be treated as equivalent to
+connecitons made the built-in way, specifically, they will be put into
+and taken from the persistent conneciton cache. If your C<$tcp_connect>
+function is incompatible with this kind of re-use, consider switching off
+C<persistent> connections and/or providing a C<session> identifier.
+
 There are probably lots of weird uses for this function, starting from
 tracing the hosts C<http_request> actually tries to connect, to (inexact
 but fast) host => IP address caching or even socks protocol support.
