@@ -200,6 +200,11 @@ C<AnyEvent::HTTP::set_proxy>).
 Currently, if your proxy requires authorization, you have to specify an
 appropriate "Proxy-Authorization" header in every request.
 
+Note that this module will prefer an existing persistent connection,
+even if that connection was made using another proxy. If you need to
+ensure that a new conneciton is made in this case, you can either force
+C<persistent> to false or e.g. use the proxy address in your C<sessionid>.
+
 =item body => $string
 
 The request body, usually empty. Will be sent as-is (future versions of
@@ -241,13 +246,15 @@ me the page, no matter what".
 
 See also the C<sessionid> parameter.
 
-=item session => $string
+=item sessionid => $string
 
-The module might reuse connections to the same host internally. Sometimes
-(e.g. when using TLS), you do not want to reuse connections from other
-sessions. This can be achieved by setting this parameter to some unique
-ID (such as the address of an object storing your state data, or the TLS
-context) - only connections using the same unique ID will be reused.
+The module might reuse connections to the same host internally (regardless
+of other settings, such as C<tcp_connect> or C<proxy>). Sometimes (e.g.
+when using TLS or a specfic proxy), you do not want to reuse connections
+from other sessions. This can be achieved by setting this parameter to
+some unique ID (such as the address of an object storing your state data
+or the TLS context, or the proxy IP) - only connections using the same
+unique ID will be reused.
 
 =item on_prepare => $callback->($fh)
 
@@ -270,7 +277,7 @@ The connections made by this hook will be treated as equivalent to
 connecitons made the built-in way, specifically, they will be put into
 and taken from the persistent conneciton cache. If your C<$tcp_connect>
 function is incompatible with this kind of re-use, consider switching off
-C<persistent> connections and/or providing a C<session> identifier.
+C<persistent> connections and/or providing a C<sessionid> identifier.
 
 There are probably lots of weird uses for this function, starting from
 tracing the hosts C<http_request> actually tries to connect, to (inexact
@@ -351,7 +358,7 @@ Try to create/reuse a persistent connection. When this flag is set
 (default: true for idempotent requests, false for all others), then
 C<http_request> tries to re-use an existing (previously-created)
 persistent connection to same host (i.e. identical URL scheme, hostname,
-port and session) and, failing that, tries to create a new one.
+port and sessionid) and, failing that, tries to create a new one.
 
 Requests failing in certain ways will be automatically retried once, which
 is dangerous for non-idempotent requests, which is why it defaults to off
@@ -361,7 +368,7 @@ connection timeout, so you never know whether there was a problem with
 your request or not.
 
 When reusing an existent connection, many parameters (such as TLS context)
-will be ignored. See the C<session> parameter for a workaround.
+will be ignored. See the C<sessionid> parameter for a workaround.
 
 =item keepalive => $boolean
 
