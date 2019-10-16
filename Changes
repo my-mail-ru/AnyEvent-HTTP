@@ -20,6 +20,7 @@ TODO: cookie_jar_extract should refuse when host is an ip literal
 TODO: cookie_jar_et_cookie should reject cookies not matching their down server domain
 TODO: cookie prefixes? https://tools.ietf.org/html/draft-ietf-httpbis-cookie-prefixes-00
 
+TODO: default rbud_max limit for header-reading, chunk header reading etc.
 	- the sessionid parameter was documented as session in random
           places - fix docs and keep using sessionid in the code as before.
 	- fix cookie format documentation.

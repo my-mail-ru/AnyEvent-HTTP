@@ -202,7 +202,7 @@ appropriate "Proxy-Authorization" header in every request.
 
 Note that this module will prefer an existing persistent connection,
 even if that connection was made using another proxy. If you need to
-ensure that a new conneciton is made in this case, you can either force
+ensure that a new connection is made in this case, you can either force
 C<persistent> to false or e.g. use the proxy address in your C<sessionid>.
 
 =item body => $string
@@ -274,8 +274,8 @@ obviously, it has to follow the same calling conventions, except that it
 may always return a connection guard object.
 
 The connections made by this hook will be treated as equivalent to
-connecitons made the built-in way, specifically, they will be put into
-and taken from the persistent conneciton cache. If your C<$tcp_connect>
+connections made the built-in way, specifically, they will be put into
+and taken from the persistent connection cache. If your C<$tcp_connect>
 function is incompatible with this kind of re-use, consider switching off
 C<persistent> connections and/or providing a C<sessionid> identifier.
 
