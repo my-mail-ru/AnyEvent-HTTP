@@ -494,7 +494,7 @@ sub cookie_jar_expire($;$) {
          unless %$paths;
    }
 }
- 
+
 # extract cookies from jar
 sub cookie_jar_extract($$$$) {
    my ($jar, $scheme, $host, $path) = @_;
@@ -538,7 +538,7 @@ sub cookie_jar_extract($$$$) {
 
    \@cookies
 }
- 
+
 # parse set_cookie header into jar
 sub cookie_jar_set_cookie($$$$) {
    my ($jar, $set_cookie, $host, $date) = @_;
@@ -834,8 +834,12 @@ sub http_request($$@) {
    $hdr{referer}      = "$uscheme://$uauthority$upath" unless exists $hdr{referer};
    $hdr{"user-agent"} = $USERAGENT                     unless exists $hdr{"user-agent"};
 
-   $hdr{"content-length"} = length $arg{body}
-      if length $arg{body} || $method ne "GET";
+   if (ref $arg{body} eq 'GLOB') {
+      $hdr{"content-length"} = -s $arg{body};
+   } elsif(length $arg{body} || $method ne "GET") {
+      $hdr{"content-length"} = length $arg{body};
+   }
+
 
    my $idempotent = $IDEMPOTENT{$method};
 
@@ -867,8 +871,20 @@ sub http_request($$@) {
          "$method $rpath HTTP/1.1\015\012"
          . (join "", map "\u$_: $hdr{$_}\015\012", grep defined $hdr{$_}, keys %hdr)
          . "\015\012"
-         . $arg{body}
       );
+      if (ref $arg{body} eq 'GLOB') {
+         $hdl->on_drain( sub {
+            read $arg{body}, my $buf, 65536;
+            unless (length $buf) {
+                $hdl->on_drain(undef);
+                return;
+            }
+            $hdl->push_write($buf);
+         });
+      } else {
+         $hdl->push_write($arg{body});
+      }
+
 
       # return if error occurred during push_write()
       return unless %state;
