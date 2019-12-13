@@ -834,7 +834,7 @@ sub http_request($$@) {
    $hdr{referer}      = "$uscheme://$uauthority$upath" unless exists $hdr{referer};
    $hdr{"user-agent"} = $USERAGENT                     unless exists $hdr{"user-agent"};
 
-   if (ref $arg{body} eq 'GLOB') {
+   if (UNIVERSAL::isa($arg{body}, 'GLOB')) {
       $hdr{"content-length"} = -s $arg{body};
    } elsif(length $arg{body} || $method ne "GET") {
       $hdr{"content-length"} = length $arg{body};
@@ -872,7 +872,7 @@ sub http_request($$@) {
          . (join "", map "\u$_: $hdr{$_}\015\012", grep defined $hdr{$_}, keys %hdr)
          . "\015\012"
       );
-      if (ref $arg{body} eq 'GLOB') {
+      if (UNIVERSAL::isa($arg{body}, 'GLOB')) {
          $hdl->on_drain( sub {
             read $arg{body}, my $buf, 65536;
             unless (length $buf) {
