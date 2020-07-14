@@ -48,7 +48,7 @@ use AnyEvent::Handle ();
 
 use base Exporter::;
 
-our $VERSION = 2.24_1;
+our $VERSION = 2.24_2;
 
 our @EXPORT = qw(http_get http_post http_head http_request);
 
