@@ -986,6 +986,8 @@ sub http_request($$@) {
 
          my $finish = sub { # ($data, $err_status, $err_reason[, $persistent])
             if ($state{handle}) {
+               # stop read body file
+               $state{handle}->on_drain(undef);
                # handle keepalive
                if (
                   $persistent
@@ -1014,6 +1016,10 @@ sub http_request($$@) {
             }
 
             if ($redirect && exists $hdr{location}) {
+               # we have already read some bytes from file and need to re-read it
+               if (UNIVERSAL::isa($arg{body}, 'GLOB')) {
+                  seek($arg{body}, 0, 0);
+               }
                # we ignore any errors, as it is very common to receive
                # Content-Length != 0 but no actual body
                # we also access %hdr, as $_[1] might be an erro
