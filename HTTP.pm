@@ -869,7 +869,7 @@ sub http_request($$@) {
       # send request
       $hdl->push_write (
          "$method $rpath HTTP/1.1\015\012"
-         . (join "", map "\u$_: $hdr{$_}\015\012", grep defined $hdr{$_}, keys %hdr)
+         . (join "", map { ($arg{lc_headers} ? $_ : "\u$_").": $hdr{$_}\015\012" } grep defined $hdr{$_}, keys %hdr)
          . "\015\012"
       );
       if (UNIVERSAL::isa($arg{body}, 'GLOB')) {
